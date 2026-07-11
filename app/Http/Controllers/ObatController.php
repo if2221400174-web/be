@@ -29,7 +29,7 @@ class ObatController extends Controller
     public function store(Request $request){
         //1. validator
         $validator = Validator::make($request->all(),[
-            "nama_obat" => "required|string|max:255",
+            "nama_obat" => "required|string|max:255|regex:/[a-zA-Z]/",
             "harga_obat" => "required|string|max:255"
         ]);
         //2. check validator eror
@@ -78,7 +78,7 @@ class ObatController extends Controller
         }
         // 2 validator
         $validator = Validator::make($request->all(),[
-            "nama_obat" => "required|string|max:255",
+            "nama_obat" => "required|string|max:255|regex:/[a-zA-Z]/",
             "harga_obat" => "required|string|max:255"
         ]);
         if ($validator->fails()) {

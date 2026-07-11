@@ -14,14 +14,14 @@ class PasienController extends Controller
         if($pasien->isEmpty()){
             return response()->json([
                 "success" => true,
-                "messege" => "resource data not found !"
+                "message" => "resource data not found !"
             ], 200);
         }
 
 
         return response()->json([
             "success" => true,
-            "messege" => "Get all resource",
+            "message" => "Get all resource",
             "data" => $pasien
         ], 200);
     }
@@ -30,7 +30,7 @@ class PasienController extends Controller
     {
         // 1. VALIDASI
         $validator = FacadesValidator::make($request->all(), [
-            "nama" => "required|string|max:255",
+            "nama" => "required|string|max:255|regex:/^[^\d]+$/u",
             "alamat" => "required|string|max:255",
             "tanggal_lahir" => "required|date",
             "jenis_kelamin" => "required|in:Laki-laki,Perempuan"
@@ -39,7 +39,7 @@ class PasienController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 "success" => false,
-                "messege" => $validator->errors()
+                "message" => $validator->errors()
             ], 422);
         }
 
@@ -86,7 +86,7 @@ class PasienController extends Controller
         // 4. RESPONSE
         return response()->json([
             "success" => true,
-            "messege" => "resource created",
+            "message" => "resource created",
             "data" => $pasien
         ], 201);
     }
@@ -97,12 +97,12 @@ class PasienController extends Controller
         if (!$pasien){
             return response()->json([
                 "success" => false,
-                "messege" => "resource not found",
+                "message" => "resource not found",
             ]);
         }
         return response()->json([
             "success" => true,
-            "messege" => "get detail resource",
+            "message" => "get detail resource",
             "data" => $pasien
         ]);
     }
@@ -113,12 +113,12 @@ class PasienController extends Controller
         if (! $pasien){
             return response()->json([
                 "success" => false,
-                "messege" => "resourse not found"
+                "message" => "resourse not found"
             ], 404);
         }
         // 2 validator
         $validator = FacadesValidator::make($request->all(),[
-            "nama" => "required|string|max:255",
+            "nama" => "required|string|max:255|regex:regex:/^[^\d]+$/u",
             "alamat" => "required|string|max:255",
             "tanggal_lahir" => "required|date",
             "jenis_kelamin" => "required|in:Laki-laki,Perempuan"
@@ -141,7 +141,7 @@ class PasienController extends Controller
         $pasien->update($data);
         return response()->json([
             "success" => true,
-            "messege" => "resourse updated successfully",
+            "message" => "resourse updated successfully",
             "data" => $data
         ]);
     }
@@ -151,13 +151,13 @@ class PasienController extends Controller
         if (!$pasien){
             return response()->json([
                 "success" => true,
-                "messege" => "resourse not found",
+                "message" => "resourse not found",
             ]);
         }
         $pasien ->delete();
         return response()->json([
             "success" => true,
-            "messege" => "resourse deleted successfully",
+            "message" => "resourse deleted successfully",
         ]);
     }
 
