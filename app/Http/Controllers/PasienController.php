@@ -30,7 +30,7 @@ class PasienController extends Controller
     {
         // 1. VALIDASI
         $validator = FacadesValidator::make($request->all(), [
-            "nama" => "required|string|max:255|regex:/^[^\d]+$/u",
+            "nama" => "required|regex:/^[a-zA-Z\s.,\']+$/",
             "alamat" => "required|string|max:255",
             "tanggal_lahir" => "required|date",
             "jenis_kelamin" => "required|in:Laki-laki,Perempuan"
@@ -118,7 +118,7 @@ class PasienController extends Controller
         }
         // 2 validator
         $validator = FacadesValidator::make($request->all(),[
-            "nama" => "required|string|max:255|regex:regex:/^[^\d]+$/u",
+            "nama" =>"required|regex:/^[a-zA-Z\s.,\']+$/",
             "alamat" => "required|string|max:255",
             "tanggal_lahir" => "required|date",
             "jenis_kelamin" => "required|in:Laki-laki,Perempuan"
