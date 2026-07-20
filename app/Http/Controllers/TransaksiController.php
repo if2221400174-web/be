@@ -86,6 +86,7 @@ class TransaksiController extends Controller
             "jasa_medis" => $request->jasa_medis,
             "total_tarif" => $totalTarif,
             "pemeriksaan_id" => $request->pemeriksaan_id,
+            "status" => "belum_bayar",
         ]);
 
         //5. response
@@ -127,7 +128,8 @@ class TransaksiController extends Controller
         //1 validator
         $validator = Validator::make($request->all(),[
             'jasa_medis' => 'required|integer',
-            'pemeriksaan_id' => 'required|integer|exists:pemeriksaans,id'
+            'pemeriksaan_id' => 'required|integer|exists:pemeriksaans,id',
+            'status' => 'nullable|in:belum_bayar,lunas'
         ]);
 
         //2. check validator eror
@@ -170,6 +172,7 @@ class TransaksiController extends Controller
             "jasa_medis" => $request->jasa_medis,
             "total_tarif" => $totalTarif,
             "pemeriksaan_id" => $request->pemeriksaan_id,
+             "status" => $request->status ?? $transaksi->status,
         ]);
 
         //5. response

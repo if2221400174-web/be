@@ -12,6 +12,7 @@ class Transaksi extends Model
         'jasa_medis',
         'total_tarif',
         'pemeriksaan_id',
+        'status'
     ];
 
     public function pemeriksaan()
