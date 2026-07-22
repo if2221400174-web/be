@@ -23,7 +23,7 @@ Route::middleware(['auth:api'])->group(function(){
     Route::post('/change-password', [AuthController::class, 'changePassword']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::middleware(['role:admin|dokter'])->group(function(){
+    Route::middleware(['role:admin,dokter'])->group(function(){
         Route::apiResource('/pasiens', PasienController::class)->only(['show','index']);
         Route::apiResource('/rekam-medis', RekamMedisController::class)->only(['show','index']);
         Route::apiResource('/pemeriksaan', PemeriksaanController::class)->only(['show','index','store','update']);
