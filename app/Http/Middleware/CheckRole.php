@@ -22,7 +22,9 @@ class CheckRole
         }
 
         // Cek role
-        if (!in_array($user->role, $roles)) {
+        $userRole = strtolower(trim($user->role));
+        $allowedRoles = array_map('strtolower', $roles);
+        if (!in_array($userRole, $allowedRoles)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Forbidden'

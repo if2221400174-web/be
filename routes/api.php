@@ -26,7 +26,7 @@ Route::middleware(['auth:api'])->group(function(){
     Route::middleware(['role:admin,dokter'])->group(function(){
         Route::apiResource('/pasiens', PasienController::class)->only(['show','index']);
         Route::apiResource('/rekam-medis', RekamMedisController::class)->only(['show','index']);
-        Route::apiResource('/pemeriksaan', PemeriksaanController::class)->only(['show','index','store','update']);
+        Route::apiResource('/pemeriksaan', PemeriksaanController::class)->only(['show','index','store','update','destroy']);
         Route::apiResource('/obat', ObatController::class)->only(['show','index']);
         Route::apiResource('/resep', ResepController::class)->only(['show','index','store','update']);
         Route::apiResource('/transaksi', TransaksiController::class)->only(['show','index','store']);
@@ -36,7 +36,6 @@ Route::middleware(['auth:api'])->group(function(){
     Route::middleware(['role:admin'])->group(function(){
         Route::apiResource('/pasiens', PasienController::class)->only(['destroy','update','store']);
         Route::apiResource('/rekam-medis', RekamMedisController::class)->only(['destroy','store','update']);
-        Route::apiResource('/pemeriksaan', PemeriksaanController::class)->only(['destroy']);
         Route::apiResource('/obat', ObatController::class)->only(['destroy','store','update']);
         Route::apiResource('/resep', ResepController::class)->only(['destroy','update']);
         Route::apiResource('/transaksi', TransaksiController::class)->only(['destroy','update']);
