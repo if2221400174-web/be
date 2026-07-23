@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('kode_rekammedis')->unique();
             $table->string('alamat');
+            $table->string('no_wa', 25)->nullable();
             $table->date('tanggal_lahir');
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->timestamps();
