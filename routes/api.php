@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login',[AuthController::class,'login']);
 
+
+Route::get('/publik/dokumen/{kode_rm}', [PasienController::class, 'getDokumenPublik']);
+
 Route::middleware(['auth:api'])->group(function(){
     // PROFILE
     Route::get('/profile', function () {

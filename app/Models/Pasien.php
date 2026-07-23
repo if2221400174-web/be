@@ -13,6 +13,7 @@ class Pasien extends Model
         'nama',
         'kode_rekammedis',
         'alamat',
+        'no_wa',
         'tanggal_lahir',
         'jenis_kelamin',
     ];

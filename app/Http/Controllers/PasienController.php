@@ -18,7 +18,6 @@ class PasienController extends Controller
             ], 200);
         }
 
-
         return response()->json([
             "success" => true,
             "message" => "Get all resource",
@@ -32,6 +31,7 @@ class PasienController extends Controller
         $validator = FacadesValidator::make($request->all(), [
             "nama" => "required|regex:/^[a-zA-Z\s.,\']+$/",
             "alamat" => "required|string|max:255",
+            "no_wa" => "nullable|string|max:20",
             "tanggal_lahir" => "required|date",
             "jenis_kelamin" => "required|in:Laki-laki,Perempuan"
         ]);
@@ -48,26 +48,16 @@ class PasienController extends Controller
         $attempt = 0;
 
         do {
-            // menentukan batas angka berdasarkan panjang digit
             $min = pow(10, $length - 1);
             $max = pow(10, $length) - 1;
-
-            // generate angka acak
             $randomNumber = rand($min, $max);
-
-            // gabungkan dengan prefix
             $kodeRekamMedis = 'PUMDR-' . $randomNumber;
-
-            // cek apakah sudah ada di database
             $exists = Pasien::where('kode_rekammedis', $kodeRekamMedis)->exists();
 
-            // jika sudah ada, tambah percobaan
             if ($exists) {
                 $attempt++;
-
-                // kalau terlalu sering gagal, tambah digit
                 if ($attempt > 10) {
-                    $length++;   // jadi 4 digit, 5 digit, dst
+                    $length++;
                     $attempt = 0;
                 }
             }
@@ -80,7 +70,8 @@ class PasienController extends Controller
             "kode_rekammedis" => $kodeRekamMedis,
             "alamat" => $request->alamat,
             "tanggal_lahir" => $request->tanggal_lahir,
-            "jenis_kelamin" => $request->jenis_kelamin
+            "jenis_kelamin" => $request->jenis_kelamin,
+            "no_wa" => $request->no_wa
         ]);
 
         // 4. RESPONSE
@@ -108,7 +99,6 @@ class PasienController extends Controller
     }
 
     public function update(string $id, Request $request){
-        //mencari data
         $pasien = Pasien::find($id);
         if (! $pasien){
             return response()->json([
@@ -116,28 +106,33 @@ class PasienController extends Controller
                 "message" => "resourse not found"
             ], 404);
         }
+        
         // 2 validator
         $validator = FacadesValidator::make($request->all(),[
             "nama" =>"required|regex:/^[a-zA-Z\s.,\']+$/",
             "alamat" => "required|string|max:255",
+            "no_wa" => "nullable|string|max:20", 
             "tanggal_lahir" => "required|date",
             "jenis_kelamin" => "required|in:Laki-laki,Perempuan"
         ]);
+        
         if ($validator->fails()) {
             return response()->json([
             "success" => false,
             "message" => $validator->errors()
         ], 422);
         }
-        //3 siapkan data yang mau diupdate
+        
+        // 3 siapkan data yang mau diupdate
         $data= [
             "nama" => $request->nama,
             "alamat" => $request->alamat,
             "tanggal_lahir" => $request->tanggal_lahir,
-            "jenis_kelamin" => $request->jenis_kelamin
+            "jenis_kelamin" => $request->jenis_kelamin,
+            "no_wa" => $request->no_wa
         ];
 
-        //5. update data
+        // 5. update data
         $pasien->update($data);
         return response()->json([
             "success" => true,
@@ -161,4 +156,21 @@ class PasienController extends Controller
         ]);
     }
 
+    public function getDokumenPublik($kode_rm)
+    {
+        $pasien = Pasien::where('kode_rekammedis', $kode_rm)->first();
+
+        if (!$pasien) {
+            return response()->json([
+                "success" => false,
+                "message" => "Dokumen tidak ditemukan atau kode tidak valid."
+            ], 404);
+        }
+
+        return response()->json([
+            "success" => true,
+            "message" => "Data dokumen pasien berhasil ditarik",
+            "data" => $pasien
+        ], 200);
+    }
 }
